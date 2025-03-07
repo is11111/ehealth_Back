@@ -15,18 +15,22 @@ pipeline {
     // }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/mikagouzee/ehealth-back.git', branch: 'master'
-            }
-        }
-
+       // stage('Checkout') {
+         //   steps {
+           //     git url: 'https://github.com/mikagouzee/ehealth-back.git', branch: 'master'
+            //}
+        //}
+       
         stage('Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package' 
             }
         }
-
+         stage('Analytics report'){
+            steps {
+            recordIssues sourceCodeRetention: 'LAST_BUILD', tools: [pmdParser(), checkStyle()]
+            }
+        }
         // stage('Deploy') {
         //     steps {
         //         sh '''
